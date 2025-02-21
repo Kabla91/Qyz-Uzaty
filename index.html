@@ -5,22 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qyz Uzaty</title>
     <style>
-        body, html {
+        * {
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
             font-family: Arial, sans-serif;
             text-align: center;
             color: white;
+            overflow: hidden;
         }
         .container {
-            display: flex;
-            flex-direction: column;
+            width: 100%;
             height: 300vh; /* 3 экрана */
             scroll-snap-type: y mandatory;
             overflow-y: scroll;
         }
         .section {
+            width: 100%;
             height: 100vh;
             display: flex;
             align-items: center;
@@ -29,14 +34,13 @@
             scroll-snap-align: start;
             background-size: cover;
             background-position: center;
-            width: 100%;
             font-size: 28px;
             font-weight: bold;
         }
-        .img1 { background-image: url('image_1.png'); }
-        .img2 { background-image: url('image_2.png'); }
+        .img1 { background-image: url('image1.jpg'); }
+        .img2 { background-image: url('image2.jpg'); }
         .img3 { 
-            background-image: url('image_3.png'); 
+            background-image: url('image3.jpg'); 
             display: flex;
             flex-direction: column;
             justify-content: space-between;
