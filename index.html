@@ -17,9 +17,9 @@
             font-family: Arial, sans-serif;
             text-align: center;
             color: white;
+            background-color: black;
             overflow: auto;
             -webkit-overflow-scrolling: touch;
-            background-color: black;
         }
 
         .container {
@@ -50,7 +50,8 @@
             background-image: url('image_3.png'); 
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
         }
 
@@ -61,34 +62,29 @@
             margin-top: 20px;
         }
 
-        label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .vote-button {
+            width: 250px;
+            padding: 15px;
             font-size: 18px;
             background: rgba(255, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        input[type="radio"] {
-            transform: scale(1.2);
-        }
-
-        .submit-button {
-            margin-top: 20px;
-            padding: 15px 25px;
-            font-size: 18px;
-            background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 10px;
             cursor: pointer;
             transition: 0.3s;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .submit-button:hover {
+        .vote-button:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .vote-result {
+            margin-left: 10px;
+            font-size: 16px;
             opacity: 0.8;
         }
     </style>
@@ -100,23 +96,27 @@
         <div class="section img3">
             <div>Келесіз бе?</div>
             <div class="vote-options">
-                <label><input type="radio" name="vote" value="Конечно приду"> Конечно приду</label>
-                <label><input type="radio" name="vote" value="С парой приду"> С парой приду</label>
-                <label><input type="radio" name="vote" value="К сожалению не смогу"> К сожалению не смогу</label>
+                <button class="vote-button" onclick="vote(0)">Конечно приду <span class="vote-result" id="result-0">0%</span></button>
+                <button class="vote-button" onclick="vote(1)">С парой приду <span class="vote-result" id="result-1">0%</span></button>
+                <button class="vote-button" onclick="vote(2)">К сожалению не смогу <span class="vote-result" id="result-2">0%</span></button>
             </div>
-            <button class="submit-button" onclick="submitVote()">Отправить</button>
         </div>
     </div>
 
     <script>
-        function submitVote() {
-            const selectedOption = document.querySelector('input[name="vote"]:checked');
-            if (selectedOption) {
-                const message = encodeURIComponent(`Мой ответ: ${selectedOption.value}`);
-                const telegramLink = `https://t.me/yourtelegram?text=${message}`;
-                window.location.href = telegramLink;
-            } else {
-                alert("Выберите вариант перед отправкой.");
+        let votes = [0, 0, 0]; // Массив голосов
+        let totalVotes = 0;
+
+        function vote(index) {
+            votes[index]++;
+            totalVotes++;
+            updateResults();
+        }
+
+        function updateResults() {
+            for (let i = 0; i < votes.length; i++) {
+                let percentage = totalVotes > 0 ? Math.round((votes[i] / totalVotes) * 100) : 0;
+                document.getElementById(`result-${i}`).innerText = `${percentage}%`;
             }
         }
     </script>
