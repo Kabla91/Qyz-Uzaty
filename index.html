@@ -51,7 +51,7 @@
         .img3 { background-image: url('desktop_3.png'); }
 
         /* Для мобильных телефонов загружаем другие изображения */
-        @media screen and (max-width: 1080px) {
+        @media screen and (max-height: 1920px) {
             .img1 { background-image: url('mobile_1.jpg'); }
             .img2 { background-image: url('mobile_2.jpg'); }
             .img3 { background-image: url('mobile_3.jpg'); }
@@ -67,6 +67,25 @@
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* Анимация обручальных колец */
+        .scroll-icon {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: url('rings.png') no-repeat center center;
+            background-size: contain;
+            animation: bounce 1.5s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, 0); }
+            50% { transform: translate(-50%, -10px); }
         }
 
         .vote-section {
@@ -111,41 +130,21 @@
             font-size: 16px;
             opacity: 0.8;
         }
-
-        /* Кнопка прокрутки */
-        .scroll-button {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.3);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .scroll-button:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="section img1">
             <div class="fade-in">Құрметті қонақтар!</div>
-            <button class="scroll-button" onclick="scrollToNext(1)">⬇️</button>
+            <div class="scroll-icon" onclick="scrollToNext(1)"></div>
         </div>
         <div class="section img2">
             <div class="fade-in">Сіздерді қыз ұзату кешіне шақырамыз</div>
-            <button class="scroll-button" onclick="scrollToNext(2)">⬇️</button>
+            <div class="scroll-icon" onclick="scrollToNext(2)"></div>
         </div>
         <div class="section img3">
             <div class="fade-in">Келесіз бе?</div>
-            <button class="scroll-button" onclick="scrollToNext(3)">⬇️</button>
+            <div class="scroll-icon" onclick="scrollToNext(3)"></div>
         </div>
         <div class="section vote-section">
             <div class="fade-in">Сіздің таңдауыңыз:</div>
