@@ -58,45 +58,6 @@
             .img4 { background-image: url('mobile_4.jpg'); }
         }
 
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Анимация обручальных колец */
-        .scroll-icon {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 50px;
-            background: url('wedding-ring.png') no-repeat center center;
-            background-size: contain;
-            animation: bounce 1.5s infinite;
-            cursor: pointer;
-            opacity: 0.2; /* Начальная прозрачность */
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        /* Показываем анимацию при наведении */
-        .scroll-icon:hover {
-            opacity: 1;
-            animation: bounce 1.5s infinite;
-        }
-
-        /* Ключевые кадры для анимации */
-        @keyframes bounce {
-            0%, 100% { transform: translate(-50%, 0); }
-            50% { transform: translate(-50%, -10px); }
-        }
-
         /* Фон для блока с голосованием */
         .vote-section {
             background-image: url('vote-background.jpg'); /* Убедись, что изображение в папке */
@@ -138,26 +99,31 @@
             background: rgba(255, 255, 255, 0.4);
         }
 
-        .vote-result {
-            margin-left: 10px;
-            font-size: 16px;
-            opacity: 0.8;
+        /* Итоги голосования */
+        .vote-results {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            display: none;
+            color: black; /* Черный шрифт */
+            font-size: 18px;
+            text-align: center;
         }
+
     </style>
 </head>
 <body>
     <div class="container">
         <div class="section img1">
-            <div class="fade-in">Құрметті қонақтар!</div>
-            <div class="scroll-icon" onclick="scrollToNext(1)"></div>
         </div>
         <div class="section img2">
             <div class="fade-in">Сіздерді қыз ұзату кешіне шақырамыз</div>
-            <div class="scroll-icon" onclick="scrollToNext(2)"></div>
         </div>
         <div class="section img3">
             <div class="fade-in">Келесіз бе?</div>
-            <div class="scroll-icon" onclick="scrollToNext(3)"></div>
         </div>
         <div class="section vote-section">
             <div class="fade-in">Сіздің таңдауыңыз:</div>
@@ -165,6 +131,13 @@
                 <button class="vote-button" onclick="vote(0)">Конечно приду <span class="vote-result" id="result-0">0%</span></button>
                 <button class="vote-button" onclick="vote(1)">С парой приду <span class="vote-result" id="result-1">0%</span></button>
                 <button class="vote-button" onclick="vote(2)">К сожалению не смогу <span class="vote-result" id="result-2">0%</span></button>
+            </div>
+            <!-- Итоговый блок -->
+            <div class="vote-results" id="vote-results">
+                <p>Итоги голосования:</p>
+                <p>✅ Конечно приду: <span id="final-result-0">0%</span></p>
+                <p>✅ С парой приду: <span id="final-result-1">0%</span></p>
+                <p>❌ К сожалению не смогу: <span id="final-result-2">0%</span></p>
             </div>
         </div>
     </div>
@@ -183,37 +156,10 @@
             for (let i = 0; i < votes.length; i++) {
                 let percentage = totalVotes > 0 ? Math.round((votes[i] / totalVotes) * 100) : 0;
                 document.getElementById(`result-${i}`).innerText = `${percentage}%`;
+                document.getElementById(`final-result-${i}`).innerText = `${percentage}%`;
             }
+            document.getElementById('vote-results').style.display = 'block'; // Показываем блок итогов
         }
-
-        function scrollToNext(index) {
-            let sections = document.querySelectorAll('.section');
-            if (sections[index]) {
-                sections[index].scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        // Анимация появления текста при прокрутке
-        document.addEventListener("scroll", function() {
-            let fadeElements = document.querySelectorAll(".fade-in");
-            fadeElements.forEach((el) => {
-                let rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.85) {
-                    el.classList.add("visible");
-                }
-            });
-        });
-
-        // Запуск анимации при загрузке
-        document.addEventListener("DOMContentLoaded", function() {
-            let fadeElements = document.querySelectorAll(".fade-in");
-            fadeElements.forEach((el) => {
-                let rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.85) {
-                    el.classList.add("visible");
-                }
-            });
-        });
     </script>
 </body>
 </html>
