@@ -19,6 +19,7 @@
             color: white;
             background-color: black;
             overflow: auto;
+            -webkit-overflow-scrolling: touch;
             position: relative;
         }
 
@@ -58,9 +59,10 @@
         .img3 { background-image: url('desktop_3.png'); }
 
         @media screen and (max-width: 768px) {
-            .img1 { background-image: url('2mobile_1.jpg'); }
-            .img2 { background-image: url('2mobile_2.jpg'); }
-            .img3 { background-image: url('2mobile_3.jpg'); }
+            .img1 { background-image: url('mobile_1.jpg'); }
+            .img2 { background-image: url('mobile_2.jpg'); }
+            .img3 { background-image: url('mobile_3.jpg'); }
+            .img4 { background-image: url('mobile_4.jpg'); }
         }
 
         .vote-section {
@@ -139,18 +141,13 @@
             height: 20px;
             background-image: url('petal.png');
             background-size: contain;
-            opacity: 0;
-            animation: fall linear infinite, fadeIn 1s ease-in forwards;
+            opacity: 0.8;
+            animation: fall linear infinite;
         }
 
         @keyframes fall {
             0% { transform: translateY(0) rotate(0); }
             100% { transform: translateY(100vh) rotate(360deg); }
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
         }
     </style>
 </head>
@@ -183,28 +180,10 @@
                 petal.style.left = Math.random() * 100 + "vw";
                 petal.style.animationDuration = Math.random() * 5 + 3 + "s";
                 document.body.appendChild(petal);
-
-                petal.addEventListener('animationend', () => petal.remove());
+                setTimeout(() => petal.remove(), 8000);
             }
         }
         setInterval(createPetals, 1500);
-
-        function scrollToNext(index) {
-            let sections = document.querySelectorAll('.section');
-            if (sections[index]) {
-                sections[index].scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        document.addEventListener("scroll", function () {
-            let sections = document.querySelectorAll(".section");
-            sections.forEach(section => {
-                let rect = section.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.75) {
-                    section.classList.add("visible");
-                }
-            });
-        });
     </script>
 </body>
 </html>
