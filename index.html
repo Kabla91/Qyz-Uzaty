@@ -45,12 +45,12 @@
             background-repeat: no-repeat;
         }
 
-        /* Фон для ПК */
+        /* Фон для секций */
         .img1 { background-image: url('desktop_1.png'); }
         .img2 { background-image: url('desktop_2.png'); }
         .img3 { background-image: url('desktop_3.png'); }
 
-        /* Для мобильных телефонов загружаем другие изображения */
+        /* Фон для мобильных */
         @media screen and (max-width: 768px) {
             .img1 { background-image: url('mobile_1.jpg'); }
             .img2 { background-image: url('mobile_2.jpg'); }
@@ -58,9 +58,9 @@
             .img4 { background-image: url('mobile_4.jpg'); }
         }
 
-        /* Фон для блока с голосованием */
+        /* Голосование */
         .vote-section {
-            background-image: url('vote-background.jpg'); /* Убедись, что изображение в папке */
+            background-image: url('vote-background.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -69,7 +69,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            height: 100vh; /* Делаем секцию полной высоты */
+            height: 100vh;
         }
 
         .vote-options {
@@ -108,9 +108,48 @@
             width: 80%;
             max-width: 400px;
             display: none;
-            color: black; /* Черный шрифт */
+            color: black;
             font-size: 18px;
             text-align: center;
+        }
+
+        /* Кольцо вниз */
+        .scroll-icon {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: url('wedding-ring.png') no-repeat center center;
+            background-size: contain;
+            animation: bounce 1.5s infinite;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        /* Кольцо вверх (только на голосовании) */
+        .scroll-up-icon {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: url('wedding-ring.png') no-repeat center center;
+            background-size: contain;
+            animation: bounce 1.5s infinite;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s ease-in-out;
+            display: none; /* Изначально скрыто */
+        }
+
+        /* Анимация прыгающего кольца */
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, 0); }
+            50% { transform: translate(-50%, -10px); }
         }
 
     </style>
@@ -118,12 +157,16 @@
 <body>
     <div class="container">
         <div class="section img1">
+            <div class="fade-in">Құрметті қонақтар!</div>
+            <div class="scroll-icon" onclick="scrollToNext(1)"></div>
         </div>
         <div class="section img2">
             <div class="fade-in">Сіздерді қыз ұзату кешіне шақырамыз</div>
+            <div class="scroll-icon" onclick="scrollToNext(2)"></div>
         </div>
         <div class="section img3">
             <div class="fade-in">Келесіз бе?</div>
+            <div class="scroll-icon" onclick="scrollToNext(3)"></div>
         </div>
         <div class="section vote-section">
             <div class="fade-in">Сіздің таңдауыңыз:</div>
@@ -132,18 +175,18 @@
                 <button class="vote-button" onclick="vote(1)">С парой приду <span class="vote-result" id="result-1">0%</span></button>
                 <button class="vote-button" onclick="vote(2)">К сожалению не смогу <span class="vote-result" id="result-2">0%</span></button>
             </div>
-            <!-- Итоговый блок -->
             <div class="vote-results" id="vote-results">
                 <p>Итоги голосования:</p>
                 <p>✅ Конечно приду: <span id="final-result-0">0%</span></p>
                 <p>✅ С парой приду: <span id="final-result-1">0%</span></p>
                 <p>❌ К сожалению не смогу: <span id="final-result-2">0%</span></p>
             </div>
+            <div class="scroll-up-icon" onclick="scrollToTop()"></div>
         </div>
     </div>
 
     <script>
-        let votes = [0, 0, 0]; // Массив голосов
+        let votes = [0, 0, 0];
         let totalVotes = 0;
 
         function vote(index) {
@@ -158,7 +201,19 @@
                 document.getElementById(`result-${i}`).innerText = `${percentage}%`;
                 document.getElementById(`final-result-${i}`).innerText = `${percentage}%`;
             }
-            document.getElementById('vote-results').style.display = 'block'; // Показываем блок итогов
+            document.getElementById('vote-results').style.display = 'block';
+            document.querySelector('.scroll-up-icon').style.display = 'block'; // Показываем кольцо вверх
+        }
+
+        function scrollToNext(index) {
+            let sections = document.querySelectorAll('.section');
+            if (sections[index]) {
+                sections[index].scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function scrollToTop() {
+            document.querySelector('.container').scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
