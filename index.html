@@ -69,23 +69,34 @@
             transform: translateY(0);
         }
 
-        /* Анимация обручальных колец */
-        .scroll-icon {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 50px;
-            background: url('wedding-ring.png') no-repeat center center;
-            background-size: contain;
-            animation: bounce 1.5s infinite;
-            cursor: pointer;
-        }
+/* Анимация обручальных колец */
+.scroll-icon {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 50px;
+    background: url('wedding-ring.png') no-repeat center center;
+    background-size: contain;
+    animation: bounce 1.5s infinite;
+    cursor: pointer;
+    opacity: 0.5; /* Начальная прозрачность */
+    transition: opacity 0.3s ease-in-out;
+}
 
-        @keyframes bounce {
-            0%, 100% { transform: translate(-50%, 0); }
-            50% { transform: translate(-50%, -10px); }
+/* Показываем анимацию при наведении */
+.scroll-icon:hover {
+    opacity: 1;
+    animation: bounce 1.5s infinite;
+}
+
+/* Ключевые кадры для анимации */
+@keyframes bounce {
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, -10px); }
+}
+
         }
 
         .vote-section {
