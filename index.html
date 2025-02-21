@@ -51,7 +51,7 @@
         .img3 { background-image: url('desktop_3.png'); }
 
         /* Для мобильных телефонов загружаем другие изображения */
-        @media screen and (max-height: 1920px) {
+        @media screen and (max-width: 768px) {
             .img1 { background-image: url('mobile_1.jpg'); }
             .img2 { background-image: url('mobile_2.jpg'); }
             .img3 { background-image: url('mobile_3.jpg'); }
@@ -69,44 +69,46 @@
             transform: translateY(0);
         }
 
-/* Анимация обручальных колец */
-.scroll-icon {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 50px;
-    background: url('wedding-ring.png') no-repeat center center;
-    background-size: contain;
-    animation: bounce 1.5s infinite;
-    cursor: pointer;
-    opacity: 0.2; /* Начальная прозрачность */
-    transition: opacity 0.3s ease-in-out;
-}
-
-/* Показываем анимацию при наведении */
-.scroll-icon:hover {
-    opacity: 1;
-    animation: bounce 1.5s infinite;
-}
-
-/* Ключевые кадры для анимации */
-@keyframes bounce {
-    0%, 100% { transform: translate(-50%, 0); }
-    50% { transform: translate(-50%, -10px); }
-}
-
+        /* Анимация обручальных колец */
+        .scroll-icon {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: url('wedding-ring.png') no-repeat center center;
+            background-size: contain;
+            animation: bounce 1.5s infinite;
+            cursor: pointer;
+            opacity: 0.2; /* Начальная прозрачность */
+            transition: opacity 0.3s ease-in-out;
         }
 
+        /* Показываем анимацию при наведении */
+        .scroll-icon:hover {
+            opacity: 1;
+            animation: bounce 1.5s infinite;
+        }
+
+        /* Ключевые кадры для анимации */
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, 0); }
+            50% { transform: translate(-50%, -10px); }
+        }
+
+        /* Фон для блока с голосованием */
         .vote-section {
+            background-image: url('vote-background.jpg'); /* Убедись, что изображение в папке */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: #222;
-            color: white;
             padding: 20px;
+            height: 100vh; /* Делаем секцию полной высоты */
         }
 
         .vote-options {
@@ -144,12 +146,6 @@
     </style>
 </head>
 <body>
-        .vote-section {
-    background-image: url('vote-background.jpg'); /* Замени на свой файл */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
     <div class="container">
         <div class="section img1">
             <div class="fade-in">Құрметті қонақтар!</div>
