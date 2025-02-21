@@ -1,60 +1,89 @@
-body, html {
-    width: 100%;
-    height: 100%;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    color: white;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приглашение</title>
+    <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: white;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    height: 300vh;
-    scroll-snap-type: y mandatory;
-    overflow-y: scroll;
-}
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 300vh;
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+        }
 
-.section {
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    scroll-snap-align: start;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
+        .section {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            scroll-snap-align: start;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
 
-.img1 { background: url('image_1.png') no-repeat center center / cover; }
-.img2 { background: url('image_2.png') no-repeat center center / cover; }
-.img3 { 
-    background: url('image_3.png') no-repeat center center / cover; 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 20px;
-}
+        .img1 { background-image: url('image_1.png'); }
+        .img2 { background-image: url('image_2.png'); }
+        .img3 { 
+            background-image: url('image_3.png'); 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
 
-.buttons {
-    margin-bottom: 50px;
-}
+        .buttons {
+            margin-bottom: 50px;
+        }
 
-button {
-    padding: 15px 25px;
-    font-size: 18px;
-    margin: 10px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s;
-}
+        button {
+            padding: 15px 25px;
+            font-size: 18px;
+            margin: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-.yes { background-color: #4CAF50; color: white; }
-.no { background-color: #FF3B30; color: white; }
+        .yes { background-color: #4CAF50; color: white; }
+        .no { background-color: #FF3B30; color: white; }
+        button:hover { opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section img1"></div>
+        <div class="section img2"></div>
+        <div class="section img3">
+            <div>Келесіз бе?</div>
+            <div class="buttons">
+                <button class="yes" onclick="respond('yes')">Приду</button>
+                <button class="no" onclick="respond('no')">Не смогу</button>
+            </div>
+        </div>
+    </div>
 
-button:hover { opacity: 0.8; }
+    <script>
+        function respond(answer) {
+            let url = answer === 'yes' ? 'https://t.me/yourtelegram' : 'mailto:yourmail@example.com';
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>
