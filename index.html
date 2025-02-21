@@ -51,10 +51,22 @@
         .img3 { background-image: url('desktop_3.png'); }
 
         /* Для мобильных телефонов загружаем другие изображения */
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 1080px) {
             .img1 { background-image: url('mobile_1.jpg'); }
             .img2 { background-image: url('mobile_2.jpg'); }
             .img3 { background-image: url('mobile_3.jpg'); }
+            .img4 { background-image: url('mobile_4.jpg'); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .vote-section {
@@ -124,16 +136,19 @@
 <body>
     <div class="container">
         <div class="section img1">
+            <div class="fade-in">Құрметті қонақтар!</div>
             <button class="scroll-button" onclick="scrollToNext(1)">⬇️</button>
         </div>
         <div class="section img2">
+            <div class="fade-in">Сіздерді қыз ұзату кешіне шақырамыз</div>
             <button class="scroll-button" onclick="scrollToNext(2)">⬇️</button>
         </div>
         <div class="section img3">
+            <div class="fade-in">Келесіз бе?</div>
             <button class="scroll-button" onclick="scrollToNext(3)">⬇️</button>
         </div>
         <div class="section vote-section">
-            <div>Келесіз бе?</div>
+            <div class="fade-in">Сіздің таңдауыңыз:</div>
             <div class="vote-options">
                 <button class="vote-button" onclick="vote(0)">Конечно приду <span class="vote-result" id="result-0">0%</span></button>
                 <button class="vote-button" onclick="vote(1)">С парой приду <span class="vote-result" id="result-1">0%</span></button>
@@ -165,6 +180,28 @@
                 sections[index].scrollIntoView({ behavior: 'smooth' });
             }
         }
+
+        // Анимация появления текста при прокрутке
+        document.addEventListener("scroll", function() {
+            let fadeElements = document.querySelectorAll(".fade-in");
+            fadeElements.forEach((el) => {
+                let rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.85) {
+                    el.classList.add("visible");
+                }
+            });
+        });
+
+        // Запуск анимации при загрузке
+        document.addEventListener("DOMContentLoaded", function() {
+            let fadeElements = document.querySelectorAll(".fade-in");
+            fadeElements.forEach((el) => {
+                let rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.85) {
+                    el.classList.add("visible");
+                }
+            });
+        });
     </script>
 </body>
 </html>
