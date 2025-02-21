@@ -20,6 +20,7 @@
             background-color: black;
             overflow: auto;
             -webkit-overflow-scrolling: touch;
+            position: relative;
         }
 
         .container {
@@ -43,14 +44,20 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
         }
 
-        /* Фон для секций */
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .img1 { background-image: url('desktop_1.png'); }
         .img2 { background-image: url('desktop_2.png'); }
         .img3 { background-image: url('desktop_3.png'); }
 
-        /* Фон для мобильных */
         @media screen and (max-width: 768px) {
             .img1 { background-image: url('mobile_1.jpg'); }
             .img2 { background-image: url('mobile_2.jpg'); }
@@ -58,7 +65,6 @@
             .img4 { background-image: url('mobile_4.jpg'); }
         }
 
-        /* Голосование */
         .vote-section {
             background-image: url('vote-background.jpg');
             background-size: cover;
@@ -95,11 +101,6 @@
             align-items: center;
         }
 
-        .vote-button:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        /* Итоги голосования */
         .vote-results {
             margin-top: 20px;
             padding: 15px;
@@ -113,7 +114,6 @@
             text-align: center;
         }
 
-        /* Кольцо вниз */
         .scroll-icon {
             position: absolute;
             bottom: 20px;
@@ -129,29 +129,26 @@
             transition: opacity 0.3s ease-in-out;
         }
 
-        /* Кольцо вверх (только на голосовании) */
-        .scroll-up-icon {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 50px;
-            background: url('wedding-ring.png') no-repeat center center;
-            background-size: contain;
-            animation: bounce 1.5s infinite;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.3s ease-in-out;
-            display: none; /* Изначально скрыто */
-        }
-
-        /* Анимация прыгающего кольца */
         @keyframes bounce {
             0%, 100% { transform: translate(-50%, 0); }
             50% { transform: translate(-50%, -10px); }
         }
 
+        .petal {
+            position: absolute;
+            top: -10px;
+            width: 20px;
+            height: 20px;
+            background-image: url('petal.png');
+            background-size: contain;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -171,24 +168,22 @@
                 <button class="vote-button" onclick="vote(1)">С парой приду <span class="vote-result" id="result-1">0%</span></button>
                 <button class="vote-button" onclick="vote(2)">К сожалению не смогу <span class="vote-result" id="result-2">0%</span></button>
             </div>
-            <div class="vote-results" id="vote-results">
-                <p>Итоги голосования:</p>
-                <p>✅ Конечно приду: <span id="final-result-0">0%</span></p>
-                <p>✅ С парой приду: <span id="final-result-1">0%</span></p>
-                <p>❌ К сожалению не смогу: <span id="final-result-2">0%</span></p>
-            </div>
-            <div class="scroll-up-icon" onclick="scrollToTop()"></div>
+            <div class="vote-results" id="vote-results"></div>
         </div>
     </div>
 
     <script>
-        function scrollToNext(index) {
-            document.querySelectorAll('.section')[index]?.scrollIntoView({ behavior: 'smooth' });
+        function createPetals() {
+            for (let i = 0; i < 15; i++) {
+                let petal = document.createElement("div");
+                petal.classList.add("petal");
+                petal.style.left = Math.random() * 100 + "vw";
+                petal.style.animationDuration = Math.random() * 5 + 3 + "s";
+                document.body.appendChild(petal);
+                setTimeout(() => petal.remove(), 8000);
+            }
         }
-
-        function scrollToTop() {
-            document.querySelector('.container').scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        setInterval(createPetals, 1500);
     </script>
 </body>
 </html>
