@@ -45,9 +45,17 @@
             background-repeat: no-repeat;
         }
 
-        .img1 { background-image: url('image_1.png'); }
-        .img2 { background-image: url('image_2.png'); }
-        .img3 { background-image: url('image_3.png'); }
+        /* Фон для ПК */
+        .img1 { background-image: url('desktop_1.png'); }
+        .img2 { background-image: url('desktop_2.png'); }
+        .img3 { background-image: url('desktop_3.png'); }
+
+        /* Для мобильных телефонов загружаем другие изображения */
+        @media screen and (max-width: 768px) {
+            .img1 { background-image: url('mobile_1.png'); }
+            .img2 { background-image: url('mobile_2.png'); }
+            .img3 { background-image: url('mobile_3.png'); }
+        }
 
         .vote-section {
             display: flex;
@@ -92,7 +100,7 @@
             opacity: 0.8;
         }
 
-        /* Стили для кнопки прокрутки */
+        /* Кнопка прокрутки */
         .scroll-button {
             position: absolute;
             bottom: 20px;
