@@ -94,7 +94,7 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="scroll-container">
         <div class="section img1">
             <div class="scroll-icon" onclick="scrollToNext(1)"></div>
         </div>
@@ -107,14 +107,18 @@
     </div>
 
     <script>
+        let petalsActive = false;
+
         function scrollToNext(index) {
             let sections = document.querySelectorAll('.section');
             if (sections[index]) {
                 sections[index].scrollIntoView({ behavior: 'smooth' });
+                startPetals();
             }
         }
 
         function createPetal() {
+            if (!petalsActive) return;
             const petal = document.createElement('div');
             petal.classList.add('petal');
             petal.style.left = Math.random() * 100 + 'vw';
@@ -124,7 +128,16 @@
             setTimeout(() => { petal.remove(); }, 5000);
         }
 
-        setInterval(createPetal, 300);
+        function startPetals() {
+            if (!petalsActive) {
+                petalsActive = true;
+                setInterval(createPetal, 300);
+            }
+        }
+
+        document.getElementById('scroll-container').addEventListener('scroll', () => {
+            startPetals();
+        }, { once: true });
     </script>
 </body>
 </html>
