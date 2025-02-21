@@ -1,12 +1,81 @@
 <!DOCTYPE html>
-<html lang="kk">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Асемның Қыз Узату</title>
+    <title>Приглашение</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: white;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 300vh;
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+        }
+        .section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            scroll-snap-align: start;
+            background-size: cover;
+            background-position: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .img1 { background-image: url('image1.jpg'); }
+        .img2 { background-image: url('image2.jpg'); }
+        .img3 { 
+            background-image: url('image3.jpg'); 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .buttons {
+            margin-bottom: 50px;
+        }
+        button {
+            padding: 15px 25px;
+            font-size: 18px;
+            margin: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .yes { background-color: #4CAF50; color: white; }
+        .no { background-color: #FF3B30; color: white; }
+        button:hover { opacity: 0.8; }
+    </style>
 </head>
 <body>
-    <h1>Қош келдіңіз!</h1>
-    <p>20 сәуір, 18:00, Ақ Мекен, Алматы</p>
+    <div class="container">
+        <div class="section img1">Құрметті қонақтар!</div>
+        <div class="section img2">Сіздерді қыз ұзату кешіне шақырамыз</div>
+        <div class="section img3">
+            <div>Келесіз бе?</div>
+            <div class="buttons">
+                <button class="yes" onclick="respond('yes')">Приду</button>
+                <button class="no" onclick="respond('no')">Не смогу</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function respond(answer) {
+            let url = answer === 'yes' ? 'https://t.me/yourtelegram' : 'mailto:yourmail@example.com';
+            window.location.href = url;
+        }
+    </script>
 </body>
 </html>
