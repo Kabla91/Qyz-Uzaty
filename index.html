@@ -156,7 +156,7 @@
         function updateResults() {
             for (let i = 0; i < votes.length; i++) {
                 let percentage = totalVotes > 0 ? Math.round((votes[i] / totalVotes) * 100) : 0;
-                document.getElementById(result-${i}).innerText = ${percentage}%;
+                document.getElementById(`result-${i}`).innerText = `${percentage}%`;
             }
         }
 
