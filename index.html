@@ -206,5 +206,28 @@
             });
         });
     </script>
+    <script>
+    function vote(option) {
+        const results = [
+            document.getElementById('result-0'),
+            document.getElementById('result-1'),
+            document.getElementById('result-2')
+        ];
+
+        // Имитация обновления результатов голосования
+        const votes = [0, 0, 0];
+        votes[option] += 1;
+
+        // Обновление отображаемого результата
+        let totalVotes = votes.reduce((acc, val) => acc + val, 0);
+        results.forEach((el, index) => {
+            let percentage = totalVotes > 0 ? (votes[index] / totalVotes * 100).toFixed(1) : 0;
+            el.textContent = `${percentage}%`;
+        });
+
+        document.getElementById('vote-results').style.display = 'block';
+    }
+</script>
+
 </body>
 </html>
