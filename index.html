@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="kk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Приглашение</title>
+    <title>Qyz Uzaty</title>
     <style>
         body, html {
             margin: 0;
@@ -16,7 +16,7 @@
         .container {
             display: flex;
             flex-direction: column;
-            height: 300vh;
+            height: 300vh; /* 3 экрана */
             scroll-snap-type: y mandatory;
             overflow-y: scroll;
         }
@@ -29,13 +29,14 @@
             scroll-snap-align: start;
             background-size: cover;
             background-position: center;
-            font-size: 24px;
+            width: 100%;
+            font-size: 28px;
             font-weight: bold;
         }
-        .img1 { background-image: url('image1.png'); }
-        .img2 { background-image: url('iamge2.png'); }
+        .img1 { background-image: url('image1.jpg'); }
+        .img2 { background-image: url('image2.jpg'); }
         .img3 { 
-            background-image: url('image3.png'); 
+            background-image: url('image3.jpg'); 
             display: flex;
             flex-direction: column;
             justify-content: space-between;
