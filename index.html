@@ -1,12 +1,16 @@
+/* Базовые стили */
 body, html {
     width: 100%;
     height: 100%;
     font-family: Arial, sans-serif;
     text-align: center;
     color: white;
-    overflow: scroll;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
 }
 
+/* Контейнер для секций */
 .container {
     display: flex;
     flex-direction: column;
@@ -15,29 +19,32 @@ body, html {
     overflow-y: scroll;
 }
 
+/* Секции */
 .section {
     width: 100%;
-    height: 100vh; /* Полный экран */
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     scroll-snap-align: start;
-    background-size: cover;
+    background-size: cover; /* ❗ Установлено "cover" для корректного отображения */
     background-position: center;
     background-repeat: no-repeat;
 }
 
-.img1 { background-image: url('image_1.png'); }
-.img2 { background-image: url('image_2.png'); }
+/* Фоновые изображения */
+.img1 { background: url('image_1.png') no-repeat center center / cover; }
+.img2 { background: url('image_2.png') no-repeat center center / cover; }
 .img3 { 
-    background-image: url('image_3.png'); 
+    background: url('image_3.png') no-repeat center center / cover; 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 20px;
 }
 
+/* Кнопки */
 .buttons {
     margin-bottom: 50px;
 }
@@ -46,4 +53,10 @@ button {
     font-size: 18px;
     margin: 10px;
     border: none;
-    border-radiu
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.yes { background-color: #4CAF50; color: white; }
+.no { background-color: #FF3B30; color: white; }
+button:hover { opacity: 0.8; }
