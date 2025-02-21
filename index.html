@@ -157,19 +157,15 @@
 <body>
     <div class="container">
         <div class="section img1">
-            <div class="fade-in">Құрметті қонақтар!</div>
             <div class="scroll-icon" onclick="scrollToNext(1)"></div>
         </div>
         <div class="section img2">
-            <div class="fade-in">Сіздерді қыз ұзату кешіне шақырамыз</div>
             <div class="scroll-icon" onclick="scrollToNext(2)"></div>
         </div>
         <div class="section img3">
-            <div class="fade-in">Келесіз бе?</div>
             <div class="scroll-icon" onclick="scrollToNext(3)"></div>
         </div>
         <div class="section vote-section">
-            <div class="fade-in">Сіздің таңдауыңыз:</div>
             <div class="vote-options">
                 <button class="vote-button" onclick="vote(0)">Конечно приду <span class="vote-result" id="result-0">0%</span></button>
                 <button class="vote-button" onclick="vote(1)">С парой приду <span class="vote-result" id="result-1">0%</span></button>
@@ -186,30 +182,8 @@
     </div>
 
     <script>
-        let votes = [0, 0, 0];
-        let totalVotes = 0;
-
-        function vote(index) {
-            votes[index]++;
-            totalVotes++;
-            updateResults();
-        }
-
-        function updateResults() {
-            for (let i = 0; i < votes.length; i++) {
-                let percentage = totalVotes > 0 ? Math.round((votes[i] / totalVotes) * 100) : 0;
-                document.getElementById(`result-${i}`).innerText = `${percentage}%`;
-                document.getElementById(`final-result-${i}`).innerText = `${percentage}%`;
-            }
-            document.getElementById('vote-results').style.display = 'block';
-            document.querySelector('.scroll-up-icon').style.display = 'block'; // Показываем кольцо вверх
-        }
-
         function scrollToNext(index) {
-            let sections = document.querySelectorAll('.section');
-            if (sections[index]) {
-                sections[index].scrollIntoView({ behavior: 'smooth' });
-            }
+            document.querySelectorAll('.section')[index]?.scrollIntoView({ behavior: 'smooth' });
         }
 
         function scrollToTop() {
