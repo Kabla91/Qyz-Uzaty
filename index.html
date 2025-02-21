@@ -20,7 +20,6 @@
             background-color: black;
             overflow: auto;
             -webkit-overflow-scrolling: touch;
-            position: relative;
         }
 
         .container {
@@ -44,6 +43,14 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .img1 { background-image: url('desktop_1.png'); }
@@ -55,89 +62,28 @@
             .img2 { background-image: url('2mobile_2.png'); }
             .img3 { background-image: url('2mobile_3.png'); }
         }
-
-        .scroll-icon {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 50px;
-            background: url('wedding-ring.png') no-repeat center center;
-            background-size: contain;
-            animation: bounce 1.5s infinite;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translate(-50%, 0); }
-            50% { transform: translate(-50%, -10px); }
-        }
-
-        /* Анимация лепестков */
-        .petal {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: url('petals.png') no-repeat center center;
-            background-size: contain;
-            opacity: 0.8;
-            animation: fall linear infinite;
-        }
-
-        @keyframes fall {
-            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-        }
     </style>
 </head>
 <body>
-    <div class="container" id="scroll-container">
-        <div class="section img1">
-            <div class="scroll-icon" onclick="scrollToNext(1)"></div>
-        </div>
-        <div class="section img2">
-            <div class="scroll-icon" onclick="scrollToNext(2)"></div>
-        </div>
-        <div class="section img3">
-            <div class="scroll-icon" onclick="scrollToNext(3)"></div>
-        </div>
+    <div class="container">
+        <div class="section img1"></div>
+        <div class="section img2"></div>
+        <div class="section img3"></div>
     </div>
 
     <script>
-        let petalsActive = false;
-
-        function scrollToNext(index) {
+        function revealSections() {
             let sections = document.querySelectorAll('.section');
-            if (sections[index]) {
-                sections[index].scrollIntoView({ behavior: 'smooth' });
-                startPetals();
-            }
+            sections.forEach(section => {
+                let rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    section.classList.add('visible');
+                }
+            });
         }
 
-        function createPetal() {
-            if (!petalsActive) return;
-            const petal = document.createElement('div');
-            petal.classList.add('petal');
-            petal.style.left = Math.random() * 100 + 'vw';
-            petal.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            petal.style.animationDelay = Math.random() * 2 + 's';
-            document.body.appendChild(petal);
-            setTimeout(() => { petal.remove(); }, 5000);
-        }
-
-        function startPetals() {
-            if (!petalsActive) {
-                petalsActive = true;
-                setInterval(createPetal, 300);
-            }
-        }
-
-        document.getElementById('scroll-container').addEventListener('scroll', () => {
-            startPetals();
-        }, { once: true });
+        window.addEventListener('scroll', revealSections);
+        window.addEventListener('load', revealSections);
     </script>
 </body>
 </html>
