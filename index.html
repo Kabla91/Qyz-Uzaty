@@ -18,15 +18,16 @@
             text-align: center;
             color: white;
             background-color: black;
-            overflow: hidden;
+            overflow: scroll;
+            -webkit-overflow-scrolling: touch;
         }
 
         .container {
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            overflow-y: auto;
+            height: 400vh;
             scroll-snap-type: y mandatory;
+            overflow-y: scroll;
             -webkit-overflow-scrolling: touch;
         }
 
@@ -44,18 +45,74 @@
             background-repeat: no-repeat;
         }
 
-        /* Фон секций */
+        /* Фон для секций */
         .img1 { background-image: url('desktop_1.png'); }
         .img2 { background-image: url('desktop_2.png'); }
         .img3 { background-image: url('desktop_3.png'); }
 
-        @media screen and (max-height: 1920px) {
+        /* Фон для мобильных */
+        @media screen and (max-width: 768px) {
             .img1 { background-image: url('2mobile_1.png'); }
             .img2 { background-image: url('2mobile_2.png'); }
             .img3 { background-image: url('2mobile_3.png'); }
         }
 
-        /* Кнопка прокрутки вниз */
+        /* Голосование */
+        .vote-section {
+            background-image: url('vote-background.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            height: 100vh;
+        }
+
+        .vote-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .vote-button {
+            width: 250px;
+            padding: 15px;
+            font-size: 18px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vote-button:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Итоги голосования */
+        .vote-results {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            display: none;
+            color: black;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        /* Кольцо вниз */
         .scroll-icon {
             position: absolute;
             bottom: 20px;
@@ -67,14 +124,28 @@
             background-size: contain;
             animation: bounce 1.5s infinite;
             cursor: pointer;
-            opacity: 0.7;
+            opacity: 0.6;
             transition: opacity 0.3s ease-in-out;
         }
 
-        .scroll-icon:hover {
-            opacity: 1;
+        /* Кольцо вверх (только на голосовании) */
+        .scroll-up-icon {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: url('wedding-ring.png') no-repeat center center;
+            background-size: contain;
+            animation: bounce 1.5s infinite;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s ease-in-out;
+            display: none; /* Изначально скрыто */
         }
 
+        /* Анимация прыгающего кольца */
         @keyframes bounce {
             0%, 100% { transform: translate(-50%, 0); }
             50% { transform: translate(-50%, -10px); }
@@ -96,14 +167,52 @@
             <div class="fade-in">Келесіз бе?</div>
             <div class="scroll-icon" onclick="scrollToNext(3)"></div>
         </div>
+        <div class="section vote-section">
+            <div class="fade-in">Сіздің таңдауыңыз:</div>
+            <div class="vote-options">
+                <button class="vote-button" onclick="vote(0)">Конечно приду <span class="vote-result" id="result-0">0%</span></button>
+                <button class="vote-button" onclick="vote(1)">С парой приду <span class="vote-result" id="result-1">0%</span></button>
+                <button class="vote-button" onclick="vote(2)">К сожалению не смогу <span class="vote-result" id="result-2">0%</span></button>
+            </div>
+            <div class="vote-results" id="vote-results">
+                <p>Итоги голосования:</p>
+                <p>✅ Конечно приду: <span id="final-result-0">0%</span></p>
+                <p>✅ С парой приду: <span id="final-result-1">0%</span></p>
+                <p>❌ К сожалению не смогу: <span id="final-result-2">0%</span></p>
+            </div>
+            <div class="scroll-up-icon" onclick="scrollToTop()"></div>
+        </div>
     </div>
 
     <script>
+        let votes = [0, 0, 0];
+        let totalVotes = 0;
+
+        function vote(index) {
+            votes[index]++;
+            totalVotes++;
+            updateResults();
+        }
+
+        function updateResults() {
+            for (let i = 0; i < votes.length; i++) {
+                let percentage = totalVotes > 0 ? Math.round((votes[i] / totalVotes) * 100) : 0;
+                document.getElementById(result-${i}).innerText = ${percentage}%;
+                document.getElementById(final-result-${i}).innerText = ${percentage}%;
+            }
+            document.getElementById('vote-results').style.display = 'block';
+            document.querySelector('.scroll-up-icon').style.display = 'block'; // Показываем кольцо вверх
+        }
+
         function scrollToNext(index) {
             let sections = document.querySelectorAll('.section');
             if (sections[index]) {
                 sections[index].scrollIntoView({ behavior: 'smooth' });
             }
+        }
+
+        function scrollToTop() {
+            document.querySelector('.container').scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
