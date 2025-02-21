@@ -18,7 +18,8 @@
             text-align: center;
             color: white;
             overflow: auto;
-            -webkit-overflow-scrolling: touch; /* Улучшает скролл на iOS */
+            -webkit-overflow-scrolling: touch;
+            background-color: black;
         }
 
         .container {
@@ -53,23 +54,43 @@
             padding: 20px;
         }
 
-        .buttons {
-            margin-bottom: 50px;
+        .vote-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
         }
 
-        button {
+        label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        input[type="radio"] {
+            transform: scale(1.2);
+        }
+
+        .submit-button {
+            margin-top: 20px;
             padding: 15px 25px;
             font-size: 18px;
-            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
             border: none;
             border-radius: 10px;
             cursor: pointer;
             transition: 0.3s;
         }
 
-        .yes { background-color: #4CAF50; color: white; }
-        .no { background-color: #FF3B30; color: white; }
-        button:hover { opacity: 0.8; }
+        .submit-button:hover {
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
@@ -78,17 +99,25 @@
         <div class="section img2"></div>
         <div class="section img3">
             <div>Келесіз бе?</div>
-            <div class="buttons">
-                <button class="yes" onclick="respond('yes')">Приду</button>
-                <button class="no" onclick="respond('no')">Не смогу</button>
+            <div class="vote-options">
+                <label><input type="radio" name="vote" value="Конечно приду"> Конечно приду</label>
+                <label><input type="radio" name="vote" value="С парой приду"> С парой приду</label>
+                <label><input type="radio" name="vote" value="К сожалению не смогу"> К сожалению не смогу</label>
             </div>
+            <button class="submit-button" onclick="submitVote()">Отправить</button>
         </div>
     </div>
 
     <script>
-        function respond(answer) {
-            let url = answer === 'yes' ? 'https://t.me/yourtelegram' : 'mailto:yourmail@example.com';
-            window.location.href = url;
+        function submitVote() {
+            const selectedOption = document.querySelector('input[name="vote"]:checked');
+            if (selectedOption) {
+                const message = encodeURIComponent(`Мой ответ: ${selectedOption.value}`);
+                const telegramLink = `https://t.me/yourtelegram?text=${message}`;
+                window.location.href = telegramLink;
+            } else {
+                alert("Выберите вариант перед отправкой.");
+            }
         }
     </script>
 </body>
