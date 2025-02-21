@@ -49,6 +49,7 @@
         .img1 { background-image: url('desktop_1.png'); }
         .img2 { background-image: url('desktop_2.png'); }
         .img3 { background-image: url('desktop_3.png'); }
+        .img4 { background-image: url('desktop_4.png'); }
 
         /* Для мобильных телефонов загружаем другие изображения */
         @media screen and (max-width: 768px) {
@@ -133,6 +134,9 @@
         <div class="section img3">
             <button class="scroll-button" onclick="scrollToNext(3)">⬇️</button>
         </div>
+        <div class="section img4">
+            <button class="scroll-button" onclick="scrollToNext(4)">⬇️</button>
+        </div>
         <div class="section vote-section">
             <div>Келесіз бе?</div>
             <div class="vote-options">
@@ -140,6 +144,7 @@
                 <button class="vote-button" onclick="vote(1)">С парой приду <span class="vote-result" id="result-1">0%</span></button>
                 <button class="vote-button" onclick="vote(2)">К сожалению не смогу <span class="vote-result" id="result-2">0%</span></button>
             </div>
+            <button class="scroll-button" onclick="scrollToNext(0)">🔼 Наверх</button>
         </div>
     </div>
 
