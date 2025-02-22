@@ -14,7 +14,7 @@
         body, html {
             width: 100%;
             height: 100%;
-            font-family: Arial, sans-serif;
+            font-family: "Georgia", serif;
             text-align: center;
             color: white;
             background-color: black;
@@ -50,7 +50,6 @@
         .img2 { background-image: url('desktop_2.png'); }
         .img3 { background-image: url('desktop_3.png'); }
 
-        /* Фон для мобильных */
         @media screen and (max-width: 768px) {
             .img1 { background-image: url('2mobile_1.png'); }
             .img2 { background-image: url('2mobile_2.png'); }
@@ -71,34 +70,38 @@
             height: 100vh;
         }
 
+        .vote-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+
         .vote-options {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 15px;
         }
 
         .vote-button {
-            width: 250px;
+            width: 300px;
             padding: 15px;
-            font-size: 18px;
-            background: rgba(255, 255, 255, 0.2);
+            font-size: 20px;
+            font-family: "Georgia", serif;
+            background: rgba(255, 215, 0, 0.3);
             color: white;
-            border: none;
-            border-radius: 10px;
+            border: 2px solid #FFD700;
+            border-radius: 50px;
             cursor: pointer;
             transition: 0.3s;
-            text-align: left;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: center;
+            font-weight: bold;
         }
 
         .vote-button:hover {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 215, 0, 0.6);
         }
 
-        /* Итоги голосования */
         .vote-results {
             margin-top: 20px;
             padding: 15px;
@@ -106,14 +109,14 @@
             border-radius: 10px;
             width: 80%;
             max-width: 400px;
-            display: none;
             color: black;
             font-size: 18px;
             text-align: center;
+            display: none;
         }
 
-        /* Кольцо вниз */
-        .scroll-icon {
+        /* Кольцо вниз и вверх */
+        .scroll-icon, .scroll-up-icon {
             position: absolute;
             bottom: 20px;
             left: 50%;
@@ -128,29 +131,12 @@
             transition: opacity 0.3s ease-in-out;
         }
 
-        /* Кольцо вверх (только на голосовании) */
-        .scroll-up-icon {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 50px;
-            background: url('wedding-ring.png') no-repeat center center;
-            background-size: contain;
-            animation: bounce 1.5s infinite;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.3s ease-in-out;
-            display: none; /* Изначально скрыто */
-        }
+        .scroll-up-icon { display: none; }
 
-        /* Анимация прыгающего кольца */
         @keyframes bounce {
             0%, 100% { transform: translate(-50%, 0); }
             50% { transform: translate(-50%, -10px); }
         }
-
     </style>
 </head>
 <body>
@@ -165,11 +151,11 @@
             <div class="scroll-icon" onclick="scrollToNext(3)"></div>
         </div>
         <div class="section vote-section">
-            <div class="fade-in">Сіздің таңдауыңыз:</div>
+            <div class="vote-title">Сіздің таңдауыңыз:</div>
             <div class="vote-options">
-                <button class="vote-button" onclick="vote(0)">Конечно приду <span class="vote-result" id="result-0">0%</span></button>
-                <button class="vote-button" onclick="vote(1)">С парой приду <span class="vote-result" id="result-1">0%</span></button>
-                <button class="vote-button" onclick="vote(2)">К сожалению не смогу <span class="vote-result" id="result-2">0%</span></button>
+                <button class="vote-button" onclick="vote(0)">🎉 Конечно приду <span id="result-0">0%</span></button>
+                <button class="vote-button" onclick="vote(1)">💑 С парой приду <span id="result-1">0%</span></button>
+                <button class="vote-button" onclick="vote(2)">😢 К сожалению не смогу <span id="result-2">0%</span></button>
             </div>
             <div class="vote-results" id="vote-results">
                 <p>Итоги голосования:</p>
@@ -194,18 +180,15 @@
         function updateResults() {
             for (let i = 0; i < votes.length; i++) {
                 let percentage = totalVotes > 0 ? Math.round((votes[i] / totalVotes) * 100) : 0;
-                document.getElementById(result-${i}).innerText = ${percentage}%;
-                document.getElementById(final-result-${i}).innerText = ${percentage}%;
+                document.getElementById(`result-${i}`).innerText = `${percentage}%`;
+                document.getElementById(`final-result-${i}`).innerText = `${percentage}%`;
             }
             document.getElementById('vote-results').style.display = 'block';
-            document.querySelector('.scroll-up-icon').style.display = 'block'; // Показываем кольцо вверх
+            document.querySelector('.scroll-up-icon').style.display = 'block';
         }
 
         function scrollToNext(index) {
-            let sections = document.querySelectorAll('.section');
-            if (sections[index]) {
-                sections[index].scrollIntoView({ behavior: 'smooth' });
-            }
+            document.querySelectorAll('.section')[index].scrollIntoView({ behavior: 'smooth' });
         }
 
         function scrollToTop() {
