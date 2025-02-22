@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Приглашение</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -45,16 +47,6 @@
             background-repeat: no-repeat;
         }
 
-        .img1 { background-image: url('desktop_1.png'); }
-        .img2 { background-image: url('desktop_2.png'); }
-        .img3 { background-image: url('desktop_3.png'); }
-
-        @media screen and (max-width: 768px) {
-            .img1 { background-image: url('2mobile_1.png'); }
-            .img2 { background-image: url('2mobile_2.png'); }
-            .img3 { background-image: url('2mobile_3.png'); }
-        }
-
         .vote-section {
             background-image: url('vote-background.png');
             background-size: cover;
@@ -66,6 +58,11 @@
             align-items: center;
             padding: 20px;
             height: 100vh;
+        }
+
+        .vote-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
             color: white;
         }
 
@@ -80,16 +77,14 @@
             width: 300px;
             padding: 15px;
             font-size: 20px;
+            font-family: 'Great Vibes', cursive;
             background: rgba(255, 255, 255, 0.2);
             color: white;
             border: 2px solid white;
             border-radius: 15px;
             cursor: pointer;
             transition: 0.3s;
-            text-align: left;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: center;
         }
 
         .vote-button:hover {
@@ -99,29 +94,15 @@
         .vote-results {
             margin-top: 20px;
             padding: 15px;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             width: 80%;
             max-width: 400px;
-            display: none;
-            color: black;
-            font-size: 18px;
+            color: white;
+            font-size: 22px;
             text-align: center;
-        }
-
-        .scroll-icon {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 50px;
-            background: url('wedding-ring.png') no-repeat center center;
-            background-size: contain;
-            animation: bounce 1.5s infinite;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.3s ease-in-out;
+            font-family: 'Great Vibes', cursive;
+            display: none;
         }
 
         .scroll-up-icon {
@@ -148,27 +129,18 @@
 </head>
 <body>
     <div class="container">
-        <div class="section img1">
-            <div class="scroll-icon" onclick="scrollToNext(1)"></div>
-        </div>
-        <div class="section img2">
-            <div class="scroll-icon" onclick="scrollToNext(2)"></div>
-        </div>
-        <div class="section img3">
-            <div class="scroll-icon" onclick="scrollToNext(3)"></div>
-        </div>
         <div class="section vote-section">
-            <h2>Ваш выбор:</h2>
+            <div class="vote-title">Сіздің таңдауыңыз:</div>
             <div class="vote-options">
-                <button class="vote-button" onclick="vote(0)">Конечно приду <span id="result-0">0</span></button>
-                <button class="vote-button" onclick="vote(1)">С парой приду <span id="result-1">0</span></button>
-                <button class="vote-button" onclick="vote(2)">К сожалению не смогу <span id="result-2">0</span></button>
+                <button class="vote-button" onclick="vote(0)">Конечно приду</button>
+                <button class="vote-button" onclick="vote(1)">С парой приду</button>
+                <button class="vote-button" onclick="vote(2)">К сожалению не смогу</button>
             </div>
             <div class="vote-results" id="vote-results">
                 <p>Итоги голосования:</p>
-                <p>✅ Конечно приду: <span id="final-result-0">0</span></p>
-                <p>✅ С парой приду: <span id="final-result-1">0</span></p>
-                <p>❌ К сожалению не смогу: <span id="final-result-2">0</span></p>
+                <p>✅ Конечно приду: <span id="final-result-0">0</span> человек</p>
+                <p>✅ С парой приду: <span id="final-result-1">0</span> человек</p>
+                <p>❌ К сожалению не смогу: <span id="final-result-2">0</span> человек</p>
             </div>
             <div class="scroll-up-icon" onclick="scrollToTop()"></div>
         </div>
@@ -176,7 +148,6 @@
 
     <script>
         let votes = [0, 0, 0];
-
         function vote(index) {
             votes[index]++;
             updateResults();
@@ -184,15 +155,10 @@
 
         function updateResults() {
             for (let i = 0; i < votes.length; i++) {
-                document.getElementById(`result-${i}`).innerText = votes[i];
                 document.getElementById(`final-result-${i}`).innerText = votes[i];
             }
             document.getElementById('vote-results').style.display = 'block';
             document.querySelector('.scroll-up-icon').style.display = 'block';
-        }
-
-        function scrollToNext(index) {
-            document.querySelectorAll('.section')[index].scrollIntoView({ behavior: 'smooth' });
         }
 
         function scrollToTop() {
