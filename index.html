@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Приглашение</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
-
         * {
             margin: 0;
             padding: 0;
@@ -16,7 +14,7 @@
         body, html {
             width: 100%;
             height: 100%;
-            font-family: Arial, sans-serif;
+            font-family: 'Great Vibes', cursive;
             text-align: center;
             color: white;
             background-color: black;
@@ -45,6 +43,14 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .img1 { background-image: url('desktop_1.png'); }
@@ -57,65 +63,7 @@
             .img3 { background-image: url('2mobile_3.png'); }
         }
 
-        .vote-section {
-            background-image: url('vote-background.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            height: 100vh;
-        }
-
-        .vote-title {
-            font-family: 'Great Vibes', cursive;
-            font-size: 36px;
-            color: white;
-        }
-
-        .vote-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .vote-button {
-            width: 250px;
-            padding: 15px;
-            font-size: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid white;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-            text-align: center;
-            font-family: 'Great Vibes', cursive;
-        }
-
-        .vote-button:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        .vote-results {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            width: 80%;
-            max-width: 400px;
-            display: none;
-            color: white;
-            font-size: 20px;
-            font-family: 'Great Vibes', cursive;
-            text-align: center;
-        }
-
-        .scroll-icon, .scroll-up-icon {
+        .scroll-icon {
             position: absolute;
             bottom: 20px;
             left: 50%;
@@ -135,11 +83,39 @@
             50% { transform: translate(-50%, -10px); }
         }
 
+        .music-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: white;
+            font-size: 20px;
+        }
+
+        .countdown {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 24px;
+        }
     </style>
 </head>
 <body>
+    <div class="music-button" onclick="toggleMusic()">🎵</div>
+    <audio id="bg-music" loop>
+        <source src="wedding-music.mp3" type="audio/mpeg">
+    </audio>
+    
     <div class="container">
         <div class="section img1">
+            <div class="countdown" id="countdown"></div>
             <div class="scroll-icon" onclick="scrollToNext(1)"></div>
         </div>
         <div class="section img2">
@@ -148,44 +124,54 @@
         <div class="section img3">
             <div class="scroll-icon" onclick="scrollToNext(3)"></div>
         </div>
-        <div class="section vote-section">
-            <div class="vote-title">Сіздің таңдауыңыз:</div>
-            <div class="vote-options">
-                <button class="vote-button" onclick="vote(0)">Конечно приду <span id="result-0">0</span></button>
-                <button class="vote-button" onclick="vote(1)">С парой приду <span id="result-1">0</span></button>
-                <button class="vote-button" onclick="vote(2)">К сожалению не смогу <span id="result-2">0</span></button>
-            </div>
-            <div class="vote-results" id="vote-results">
-                <p>Итоги голосования:</p>
-                <p>✅ Конечно приду: <span id="final-result-0">0</span></p>
-                <p>✅ С парой приду: <span id="final-result-1">0</span></p>
-                <p>❌ К сожалению не смогу: <span id="final-result-2">0</span></p>
-            </div>
-        </div>
     </div>
 
     <script>
-        let votes = [0, 0, 0];
-
-        function vote(index) {
-            votes[index]++;
-            updateResults();
-        }
-
-        function updateResults() {
-            for (let i = 0; i < votes.length; i++) {
-                document.getElementById(`result-${i}`).innerText = votes[i];
-                document.getElementById(`final-result-${i}`).innerText = votes[i];
-            }
-            document.getElementById('vote-results').style.display = 'block';
-        }
-
         function scrollToNext(index) {
             let sections = document.querySelectorAll('.section');
             if (sections[index]) {
                 sections[index].scrollIntoView({ behavior: 'smooth' });
             }
         }
+
+        function toggleMusic() {
+            let audio = document.getElementById('bg-music');
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        }
+
+        function updateCountdown() {
+            const weddingDate = new Date("2025-06-15T00:00:00");
+            const now = new Date();
+            const diff = weddingDate - now;
+            
+            if (diff <= 0) {
+                document.getElementById("countdown").innerText = "Свадьба уже началась!";
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById("countdown").innerText = `${days} дней ${hours} ч ${minutes} м ${seconds} с`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        document.addEventListener("scroll", function () {
+            document.querySelectorAll(".section").forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    section.classList.add("visible");
+                }
+            });
+        });
     </script>
 </body>
 </html>
