@@ -180,18 +180,43 @@
     <script>
         let votes = [0, 0, 0];
 
-        function vote(index) {
-            votes[index]++;
-            updateResults();
-        }
+       let votes = [0, 0, 0];
 
-        function updateResults() {
-            for (let i = 0; i < votes.length; i++) {
-                document.getElementById(`result-${i}`).innerText = votes[i];
-                document.getElementById(`final-result-${i}`).innerText = votes[i];
-            }
-            document.getElementById('vote-results').style.display = 'block';
-        }
+// Проверяем, голосовал ли пользователь ранее
+const savedVote = localStorage.getItem("userVote");
+if (savedVote !== null) {
+    disableVoting();
+    updateResults();
+}
+
+function vote(index) {
+    if (localStorage.getItem("userVote") !== null) {
+        alert("Вы уже проголосовали!");
+        return;
+    }
+
+    votes[index]++;
+    localStorage.setItem("userVote", index); // Сохраняем голос пользователя
+    updateResults();
+    disableVoting();
+}
+
+function disableVoting() {
+    document.querySelectorAll(".vote-button").forEach(button => {
+        button.disabled = true;
+        button.style.opacity = 0.5;
+        button.style.cursor = "not-allowed";
+    });
+}
+
+function updateResults() {
+    for (let i = 0; i < votes.length; i++) {
+        document.getElementById(`result-${i}`).innerText = votes[i];
+        document.getElementById(`final-result-${i}`).innerText = votes[i];
+    }
+    document.getElementById('vote-results').style.display = 'block';
+}
+
 
         function scrollToNext(index) {
             let sections = document.querySelectorAll('.section');
