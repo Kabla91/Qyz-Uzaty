@@ -51,7 +51,7 @@
         .img1 { background-image: url('desktop_1.jpg'); }
         .img2 { background-image: url('desktop_2.png'); }
         .img3 { background-image: url('desktop_3.png'); }
-        .img4 { background-image: url('desktop_4.png'); }
+        .img4 { background-image: url('vote-desktop.jpg'); }
 
         @media screen and (max-width: 768px) {
             .img1 { background-image: url('2mobile_1.png'); }
@@ -70,8 +70,7 @@
             border-radius: 10px;
             font-size: 24px;
             font-family: 'Great Vibes', cursive;
-            display: flex;
-            gap: 10px;
+            white-space: nowrap;
         }
 
         .scroll-icon {
@@ -93,6 +92,26 @@
             0%, 100% { transform: translate(-50%, 0); }
             50% { transform: translate(-50%, -10px); }
         }
+
+        /* Кнопка музыки */
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: url('music-on.png') no-repeat center center;
+            background-size: cover;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            opacity: 0.8;
+        }
+
+        .music-btn:hover {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -109,7 +128,7 @@
         </div>
         <div class="section img4">
             <div class="vote-section">
-                <h2>Вы придёте на свадьбу?</h2>
+                <h2>Вы придёте?</h2>
                 <button id="yes-btn" onclick="vote('yes')">Да</button>
                 <button id="no-btn" onclick="vote('no')">Нет</button>
                 <p id="vote-result"></p>
@@ -123,6 +142,13 @@
     <button id="musicButton" class="music-btn"></button>
 
     <script>
+        function scrollToNext(index) {
+            let sections = document.querySelectorAll('.section');
+            if (sections[index]) {
+                sections[index].scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
         function updateCountdown() {
             const weddingDate = new Date("2025-04-20T00:00:00");
             const now = new Date();
@@ -137,15 +163,25 @@
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-            document.getElementById("countdown").innerHTML = `
-                <span>${days} дней</span>
-                <span>${hours} часов</span>
-                <span>${seconds} секунд</span>
-            `;
+            document.getElementById("countdown").innerText = `${days} дней ${hours} часов ${seconds} секунд`;
         }
 
         setInterval(updateCountdown, 1000);
         updateCountdown();
+
+        const audio = document.getElementById("weddingMusic");
+        const musicButton = document.getElementById("musicButton");
+        let isPlaying = false;
+        musicButton.addEventListener("click", () => {
+            if (isPlaying) {
+                audio.pause();
+                musicButton.style.backgroundImage = "url('music-off.png')";
+            } else {
+                audio.play();
+                musicButton.style.backgroundImage = "url('music-on.png')";
+            }
+            isPlaying = !isPlaying;
+        });
     </script>
 </body>
 </html>
