@@ -12,6 +12,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: all 0.5s ease-in-out;
         }
     
         body, html {
@@ -113,6 +114,18 @@
         }
 
         /* Стили для голосования */
+        .vote-section {
+            background-image: url('vote-background.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            text-align: center;
+        }
+
         .vote-section button {
             margin: 10px;
             padding: 10px 20px;
@@ -120,18 +133,13 @@
             cursor: pointer;
             border: none;
             border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: background-color 0.3s ease-in-out;
         }
 
-     #vote-section {
-    background-image: url('vote-background.png'); /* Укажи свой файл */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    color: white; /* Сделает текст видимым на тёмном фоне */
-    padding: 20px; /* Чтобы контент не прижимался к краям */
-    border-radius: 10px; /* Закруглённые углы, если нужно */
-}
-
+        .vote-section button:hover {
+            background-color: rgba(255, 255, 255, 0.6);
         }
     </style>
 </head>
@@ -150,8 +158,8 @@
         <div class="section img4">
             <div class="vote-section">
                 <h2>Вы придёте на свадьбу?</h2>
-                <button id="yes-btn" onclick="vote('yes')">Да</button>
-                <button id="no-btn" onclick="vote('no')">Нет</button>
+                <button onclick="vote('yes')">Да</button>
+                <button onclick="vote('no')">Нет</button>
                 <p id="vote-result"></p>
             </div>
         </div>
@@ -174,36 +182,15 @@
             const weddingDate = new Date("2025-04-20T00:00:00");
             const now = new Date();
             const diff = weddingDate - now;
-
             if (diff <= 0) {
                 document.getElementById("countdown").innerText = "Свадьба уже началась!";
                 return;
             }
-
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById("countdown").innerText = `${days} дней ${hours} ч ${minutes} м ${seconds} с`;
+            document.getElementById("countdown").innerText = `${days} дней до свадьбы`;
         }
-
         setInterval(updateCountdown, 1000);
         updateCountdown();
-
-        const audio = document.getElementById("weddingMusic");
-        const musicButton = document.getElementById("musicButton");
-        let isPlaying = false;
-        musicButton.addEventListener("click", () => {
-            if (isPlaying) {
-                audio.pause();
-                musicButton.style.backgroundImage = "url('music-off.png')";
-            } else {
-                audio.play();
-                musicButton.style.backgroundImage = "url('music-on.png')";
-            }
-            isPlaying = !isPlaying;
-        });
     </script>
 </body>
 </html>
