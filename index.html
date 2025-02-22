@@ -270,20 +270,75 @@ updateCountdown();
     }
 </style>
 
-<script>
-    const audio = document.getElementById("weddingMusic");
-    const musicButton = document.getElementById("musicButton");
+    <script>
+        function updateCountdown() {
+            const weddingDate = new Date("2025-04-20T00:00:00");
+            const now = new Date();
+            const diff = weddingDate - now;
 
-    musicButton.addEventListener("click", () => {
-        if (audio.paused) {
-            audio.play();
-            musicButton.innerText = "⏸ Остановить музыку";
-        } else {
-            audio.pause();
-            musicButton.innerText = "▶ Включить музыку";
+            if (diff <= 0) {
+                document.getElementById("countdown").innerText = "Свадьба уже началась!";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerText = `${days} дней ${hours} ч ${minutes} м ${seconds} с`;
         }
-    });
-</script>
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+
+    <!-- ВСТАВЛЯЕМ СЮДА КОД С МУЗЫКОЙ -->
+    <audio id="weddingMusic" loop>
+        <source src="wedding-music.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио.
+    </audio>
+
+    <button id="musicButton" class="music-btn"></button>
+
+    <style>
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: url('music-on.png') no-repeat center center;
+            background-size: cover;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            opacity: 0.8;
+        }
+
+        .music-btn:hover {
+            opacity: 1;
+        }
+    </style>
+
+    <script>
+        const audio = document.getElementById("weddingMusic");
+        const musicButton = document.getElementById("musicButton");
+
+        let isPlaying = false;
+
+        musicButton.addEventListener("click", () => {
+            if (isPlaying) {
+                audio.pause();
+                musicButton.style.backgroundImage = "url('music-off.png')";
+            } else {
+                audio.play();
+                musicButton.style.backgroundImage = "url('music-on.png')";
+            }
+            isPlaying = !isPlaying;
+        });
+    </script>
 
 </body>
 </html>
