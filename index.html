@@ -242,5 +242,48 @@ setInterval(updateCountdown, 1000);
 updateCountdown();
 
     </script>
+    <audio id="weddingMusic" loop>
+    <source src="wedding-music.mp3" type="audio/mpeg">
+    Ваш браузер не поддерживает аудио.
+</audio>
+
+<button id="musicButton" class="music-btn">▶ Включить музыку</button>
+
+<style>
+    .music-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        font-size: 18px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 2px solid white;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+        font-family: 'Great Vibes', cursive;
+    }
+
+    .music-btn:hover {
+        background: rgba(255, 255, 255, 0.4);
+    }
+</style>
+
+<script>
+    const audio = document.getElementById("weddingMusic");
+    const musicButton = document.getElementById("musicButton");
+
+    musicButton.addEventListener("click", () => {
+        if (audio.paused) {
+            audio.play();
+            musicButton.innerText = "⏸ Остановить музыку";
+        } else {
+            audio.pause();
+            musicButton.innerText = "▶ Включить музыку";
+        }
+    });
+</script>
+
 </body>
 </html>
