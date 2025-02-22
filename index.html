@@ -178,15 +178,14 @@
     </div>
 
     <script>
-        let votes = [0, 0, 0];
-
-       let votes = [0, 0, 0];
+    let votes = [0, 0, 0];
 
 // Проверяем, голосовал ли пользователь ранее
 const savedVote = localStorage.getItem("userVote");
 if (savedVote !== null) {
-    disableVoting();
+    votes[savedVote]++; // Восстанавливаем результат голосования
     updateResults();
+    disableVoting();
 }
 
 function vote(index) {
@@ -216,8 +215,6 @@ function updateResults() {
     }
     document.getElementById('vote-results').style.display = 'block';
 }
-
-
         function scrollToNext(index) {
             let sections = document.querySelectorAll('.section');
             if (sections[index]) {
