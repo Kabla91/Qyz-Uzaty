@@ -12,7 +12,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: all 0.5s ease-in-out;
         }
     
         body, html {
@@ -71,6 +70,8 @@
             border-radius: 10px;
             font-size: 24px;
             font-family: 'Great Vibes', cursive;
+            display: flex;
+            gap: 10px;
         }
 
         .scroll-icon {
@@ -92,55 +93,6 @@
             0%, 100% { transform: translate(-50%, 0); }
             50% { transform: translate(-50%, -10px); }
         }
-
-        /* Кнопка музыки */
-        .music-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: url('music-on.png') no-repeat center center;
-            background-size: cover;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: opacity 0.3s;
-            opacity: 0.8;
-        }
-
-        .music-btn:hover {
-            opacity: 1;
-        }
-
-        /* Стили для голосования */
-        .vote-section {
-            background-image: url('vote-background.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            backdrop-filter: blur(5px);
-            text-align: center;
-        }
-
-        .vote-section button {
-            margin: 10px;
-            padding: 10px 20px;
-            font-size: 18px;
-            cursor: pointer;
-            border: none;
-            border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.3);
-            color: white;
-            transition: background-color 0.3s ease-in-out;
-        }
-
-        .vote-section button:hover {
-            background-color: rgba(255, 255, 255, 0.6);
-        }
     </style>
 </head>
 <body>
@@ -158,8 +110,8 @@
         <div class="section img4">
             <div class="vote-section">
                 <h2>Вы придёте на свадьбу?</h2>
-                <button onclick="vote('yes')">Да</button>
-                <button onclick="vote('no')">Нет</button>
+                <button id="yes-btn" onclick="vote('yes')">Да</button>
+                <button id="no-btn" onclick="vote('no')">Нет</button>
                 <p id="vote-result"></p>
             </div>
         </div>
@@ -171,24 +123,27 @@
     <button id="musicButton" class="music-btn"></button>
 
     <script>
-        function scrollToNext(index) {
-            let sections = document.querySelectorAll('.section');
-            if (sections[index]) {
-                sections[index].scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
         function updateCountdown() {
             const weddingDate = new Date("2025-04-20T00:00:00");
             const now = new Date();
             const diff = weddingDate - now;
+
             if (diff <= 0) {
                 document.getElementById("countdown").innerText = "Свадьба уже началась!";
                 return;
             }
+
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            document.getElementById("countdown").innerText = `${days} дней до свадьбы`;
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML = `
+                <span>${days} дней</span>
+                <span>${hours} часов</span>
+                <span>${seconds} секунд</span>
+            `;
         }
+
         setInterval(updateCountdown, 1000);
         updateCountdown();
     </script>
