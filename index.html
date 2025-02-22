@@ -45,11 +45,13 @@
             background-position: center;
             background-repeat: no-repeat;
             opacity: 0;
-            transition: opacity 1s ease-in-out;
+            transform: translateY(50px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
         }
 
         .visible {
             opacity: 1;
+            transform: translateY(0);
         }
 
         .img1 { background-image: url('desktop_1.png'); }
@@ -73,7 +75,7 @@
             background-size: contain;
             animation: bounce 1.5s infinite;
             cursor: pointer;
-            opacity: 0.6;
+            opacity: 0.8;
             transition: opacity 0.3s ease-in-out;
         }
 
@@ -104,21 +106,18 @@
             }
         }
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const sections = document.querySelectorAll(".section");
+        function handleScroll() {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.75) {
+                    section.classList.add('visible');
+                }
+            });
+        }
 
-            function checkVisibility() {
-                sections.forEach((section) => {
-                    const rect = section.getBoundingClientRect();
-                    if (rect.top < window.innerHeight * 0.9) {
-                        section.classList.add("visible");
-                    }
-                });
-            }
-
-            window.addEventListener("scroll", checkVisibility);
-            checkVisibility();
-        });
+        window.addEventListener('scroll', handleScroll);
+        document.addEventListener('DOMContentLoaded', handleScroll);
     </script>
 </body>
 </html>
