@@ -7,6 +7,7 @@
     
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
 
         * {
             margin: 0;
@@ -17,7 +18,7 @@
         body, html {
             width: 100%;
             height: 100%;
-            font-family: Arial, sans-serif;
+            font-family: 'Playfair Display', serif;
             text-align: center;
             color: white;
             background-color: black;
@@ -61,63 +62,54 @@
         }
 
         .countdown {
-            position: absolute;
-            top: 40%;
+            position: fixed;
+            top: 10px;
             left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.2);
-            padding: 25px 35px;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            color: black;
+            padding: 15px 25px;
             border-radius: 12px;
-            font-size: 36px;
-            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-family: 'Dancing Script', cursive;
             white-space: nowrap;
         }
         
-        .scroll-icon {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 50px;
-            background: url('wedding-ring.png') no-repeat center center;
-            background-size: contain;
-            animation: bounce 1.5s infinite;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.3s ease-in-out;
+        .vote-section {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            color: black;
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translate(-50%, 0); }
-            50% { transform: translate(-50%, -10px); }
+        .vote-section h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
         }
 
-        /* Кнопка музыки */
-        .music-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: url('music-on.png') no-repeat center center;
-            background-size: cover;
+        .vote-section button {
+            background: #e6a4b4;
+            color: white;
             border: none;
-            border-radius: 50%;
+            padding: 12px 20px;
+            margin: 5px;
+            font-size: 18px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: opacity 0.3s;
-            opacity: 0.8;
+            transition: 0.3s;
         }
 
-        .music-btn:hover {
-            opacity: 1;
+        .vote-section button:hover {
+            background: #d4889c;
         }
     </style>
 </head>
 <body>
+    <div class="countdown" id="countdown"></div>
     <div class="container">
         <div class="section img1">
-            <div class="countdown" id="countdown"></div>
             <div class="scroll-icon" onclick="scrollToNext(1)"></div>
         </div>
         <div class="section img2">
@@ -131,26 +123,14 @@
                 <h2>Вы придёте?</h2>
                 <button onclick="vote('yes')">Да</button>
                 <button onclick="vote('coming')">Я приду</button>
-                <button onclick="vote('couple')">Приду но с парой</button>
-                <button onclick="vote('no')">К сожалению не смогу</button>
+                <button onclick="vote('couple')">Приду с парой</button>
+                <button onclick="vote('no')">К сожалению, не смогу</button>
                 <p id="vote-result"></p>
             </div>
         </div>
     </div>
 
-    <audio id="weddingMusic" loop>
-        <source src="wedding-music.mp3" type="audio/mpeg">
-    </audio>
-    <button id="musicButton" class="music-btn"></button>
-
     <script>
-        function scrollToNext(index) {
-            let sections = document.querySelectorAll('.section');
-            if (sections[index]) {
-                sections[index].scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
         function updateCountdown() {
             const weddingDate = new Date("2025-04-20T00:00:00");
             const now = new Date();
@@ -171,21 +151,6 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        const audio = document.getElementById("weddingMusic");
-        const musicButton = document.getElementById("musicButton");
-        let isPlaying = false;
-
-        musicButton.addEventListener("click", () => {
-            if (isPlaying) {
-                audio.pause();
-                musicButton.style.backgroundImage = "url('music-off.png')";
-            } else {
-                audio.play();
-                musicButton.style.backgroundImage = "url('music-on.png')";
-            }
-            isPlaying = !isPlaying;
-        });
-
         function vote(option) {
             if (localStorage.getItem("hasVoted")) {
                 document.getElementById("vote-result").innerText = "Вы уже голосовали!";
@@ -200,36 +165,23 @@
                 totalPeople: 0
             };
 
-            switch (option) {
-                case "yes":
-                case "coming":
-                    votes[option]++;
-                    votes.totalPeople++;
-                    break;
-                case "couple":
-                    votes.couple++;
-                    votes.totalPeople += 2;
-                    break;
-                case "no":
-                    votes.no++;
-                    break;
-            }
+            votes[option]++;
+            if (option === "couple") votes.totalPeople += 2;
+            else if (option !== "no") votes.totalPeople++;
 
             localStorage.setItem("votes", JSON.stringify(votes));
             localStorage.setItem("hasVoted", "true");
-
             displayVotes();
         }
 
         function displayVotes() {
-            let votes = JSON.parse(localStorage.getItem("votes"));
+            let votes = JSON.parse(localStorage.getItem("votes")) || {};
             document.getElementById("vote-result").innerHTML = `
-                Да: ${votes.yes}<br>
-                Я приду: ${votes.coming}<br>
-                Приду но с парой: ${votes.couple}<br>
-                К сожалению не смогу: ${votes.no}<br>
-                Всего гостей: ${votes.totalPeople}
-            `;
+                Да: ${votes.yes || 0}<br>
+                Я приду: ${votes.coming || 0}<br>
+                Приду с парой: ${votes.couple || 0}<br>
+                К сожалению, не смогу: ${votes.no || 0}<br>
+                Всего гостей: ${votes.totalPeople || 0}`;
         }
 
         displayVotes();
