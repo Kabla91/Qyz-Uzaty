@@ -60,18 +60,18 @@
             .img4 { background-image: url('2mobile_4.png'); }
         }
 
-.countdown {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.2);
-    padding: 25px 35px;
-    border-radius: 12px;
-    font-size: 36px;
-    font-family: 'Playfair Display', serif;
-    white-space: nowrap;
-}
+        .countdown {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.2);
+            padding: 25px 35px;
+            border-radius: 12px;
+            font-size: 36px;
+            font-family: 'Playfair Display', serif;
+            white-space: nowrap;
+        }
         
         .scroll-icon {
             position: absolute;
@@ -127,15 +127,14 @@
             <div class="scroll-icon" onclick="scrollToNext(3)"></div>
         </div>
         <div class="section img4">
-    <div class="vote-section">
-    <h2>Вы придёте?</h2>
-    <button onclick="vote('yes')">Да</button>
-    <button onclick="vote('coming')">Я приду</button>
-    <button onclick="vote('couple')">Приду но с парой</button>
-    <button onclick="vote('no')">К сожалению не смогу</button>
-    <p id="vote-result"></p>
-</div>
-
+            <div class="vote-section">
+                <h2>Вы придёте?</h2>
+                <button onclick="vote('yes')">Да</button>
+                <button onclick="vote('coming')">Я приду</button>
+                <button onclick="vote('couple')">Приду но с парой</button>
+                <button onclick="vote('no')">К сожалению не смогу</button>
+                <p id="vote-result"></p>
+            </div>
         </div>
     </div>
 
@@ -166,7 +165,7 @@
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-            document.getElementById("countdown").innerText = ${days} дней ${hours} часов ${seconds} секунд;
+            document.getElementById("countdown").innerText = `${days} дней ${hours} часов ${seconds} секунд`;
         }
 
         setInterval(updateCountdown, 1000);
@@ -175,6 +174,7 @@
         const audio = document.getElementById("weddingMusic");
         const musicButton = document.getElementById("musicButton");
         let isPlaying = false;
+
         musicButton.addEventListener("click", () => {
             if (isPlaying) {
                 audio.pause();
@@ -185,66 +185,54 @@
             }
             isPlaying = !isPlaying;
         });
-        <script>
-    function vote(option) {
-        if (localStorage.getItem("hasVoted")) {
-            document.getElementById("vote-result").innerText = "Вы уже голосовали!";
-            return;
+
+        function vote(option) {
+            if (localStorage.getItem("hasVoted")) {
+                document.getElementById("vote-result").innerText = "Вы уже голосовали!";
+                return;
+            }
+
+            let votes = JSON.parse(localStorage.getItem("votes")) || {
+                yes: 0,
+                coming: 0,
+                couple: 0,
+                no: 0,
+                totalPeople: 0
+            };
+
+            switch (option) {
+                case "yes":
+                case "coming":
+                    votes[option]++;
+                    votes.totalPeople++;
+                    break;
+                case "couple":
+                    votes.couple++;
+                    votes.totalPeople += 2;
+                    break;
+                case "no":
+                    votes.no++;
+                    break;
+            }
+
+            localStorage.setItem("votes", JSON.stringify(votes));
+            localStorage.setItem("hasVoted", "true");
+
+            displayVotes();
         }
 
-        let votes = JSON.parse(localStorage.getItem("votes")) || {
-            yes: 0,
-            coming: 0,
-            couple: 0,
-            no: 0,
-            totalPeople: 0
-        };
-
-        switch (option) {
-            case "yes":
-                votes.yes++;
-                votes.totalPeople++;
-                break;
-            case "coming":
-                votes.coming++;
-                votes.totalPeople++;
-                break;
-            case "couple":
-                votes.couple++;
-                votes.totalPeople += 2; // Считаем пару как 2 человека
-                break;
-            case "no":
-                votes.no++;
-                break;
+        function displayVotes() {
+            let votes = JSON.parse(localStorage.getItem("votes"));
+            document.getElementById("vote-result").innerHTML = `
+                Да: ${votes.yes}<br>
+                Я приду: ${votes.coming}<br>
+                Приду но с парой: ${votes.couple}<br>
+                К сожалению не смогу: ${votes.no}<br>
+                Всего гостей: ${votes.totalPeople}
+            `;
         }
-
-        localStorage.setItem("votes", JSON.stringify(votes));
-        localStorage.setItem("hasVoted", "true");
 
         displayVotes();
-    }
-
-    function displayVotes() {
-        let votes = JSON.parse(localStorage.getItem("votes")) || {
-            yes: 0,
-            coming: 0,
-            couple: 0,
-            no: 0,
-            totalPeople: 0
-        };
-
-        document.getElementById("vote-result").innerHTML = `
-            Да: ${votes.yes}<br>
-            Я приду: ${votes.coming}<br>
-            Приду но с парой: ${votes.couple}<br>
-            К сожалению не смогу: ${votes.no}<br>
-            Всего гостей: ${votes.totalPeople}
-        `;
-    }
-
-    displayVotes();
-</script>
-
     </script>
 </body>
 </html>
