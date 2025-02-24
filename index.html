@@ -127,12 +127,15 @@
             <div class="scroll-icon" onclick="scrollToNext(3)"></div>
         </div>
         <div class="section img4">
-            <div class="vote-section">
-                <h2>Вы придёте?</h2>
-                <button id="yes-btn" onclick="vote('yes')">Да</button>
-                <button id="no-btn" onclick="vote('no')">Нет</button>
-                <p id="vote-result"></p>
-            </div>
+    <div class="vote-section">
+    <h2>Вы придёте?</h2>
+    <button onclick="vote('yes')">Да</button>
+    <button onclick="vote('coming')">Я приду</button>
+    <button onclick="vote('couple')">Приду но с парой</button>
+    <button onclick="vote('no')">К сожалению не смогу</button>
+    <p id="vote-result"></p>
+</div>
+
         </div>
     </div>
 
@@ -182,6 +185,66 @@
             }
             isPlaying = !isPlaying;
         });
+        <script>
+    function vote(option) {
+        if (localStorage.getItem("hasVoted")) {
+            document.getElementById("vote-result").innerText = "Вы уже голосовали!";
+            return;
+        }
+
+        let votes = JSON.parse(localStorage.getItem("votes")) || {
+            yes: 0,
+            coming: 0,
+            couple: 0,
+            no: 0,
+            totalPeople: 0
+        };
+
+        switch (option) {
+            case "yes":
+                votes.yes++;
+                votes.totalPeople++;
+                break;
+            case "coming":
+                votes.coming++;
+                votes.totalPeople++;
+                break;
+            case "couple":
+                votes.couple++;
+                votes.totalPeople += 2; // Считаем пару как 2 человека
+                break;
+            case "no":
+                votes.no++;
+                break;
+        }
+
+        localStorage.setItem("votes", JSON.stringify(votes));
+        localStorage.setItem("hasVoted", "true");
+
+        displayVotes();
+    }
+
+    function displayVotes() {
+        let votes = JSON.parse(localStorage.getItem("votes")) || {
+            yes: 0,
+            coming: 0,
+            couple: 0,
+            no: 0,
+            totalPeople: 0
+        };
+
+        document.getElementById("vote-result").innerHTML = `
+            Да: ${votes.yes}<br>
+            Я приду: ${votes.coming}<br>
+            Приду но с парой: ${votes.couple}<br>
+            К сожалению не смогу: ${votes.no}<br>
+            Всего гостей: ${votes.totalPeople}
+        `;
+    }
+
+    displayVotes();
+</script>
+
     </script>
 </body>
 </html>
