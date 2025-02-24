@@ -48,18 +48,6 @@
             background-repeat: no-repeat;
         }
 
-        .img1 { background-image: url('2desktop_1.jpg'); }
-        .img2 { background-image: url('desktop_2.png'); }
-        .img3 { background-image: url('desktop_3.png'); }
-        .img4 { background-image: url('vote-desktop.jpg'); }
-
-        @media screen and (max-width: 768px) {
-            .img1 { background-image: url('2mobile_1.png'); }
-            .img2 { background-image: url('2mobile_2.png'); }
-            .img3 { background-image: url('2mobile_3.png'); }
-            .img4 { background-image: url('2mobile_4.png'); }
-        }
-
         .countdown {
             position: absolute;
             top: 50%;
@@ -72,33 +60,12 @@
             font-family: 'Playfair Display', serif;
             white-space: nowrap;
         }
-
-        .scroll-icon {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 50px;
-            background: url('wedding-ring.png') no-repeat center center;
-            background-size: contain;
-            animation: bounce 1.5s infinite;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translate(-50%, 0); }
-            50% { transform: translate(-50%, -10px); }
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="section img1">
             <div class="countdown" id="countdown"></div>
-            <div class="scroll-icon" onclick="scrollToNext(1)"></div>
         </div>
     </div>
 </body>
