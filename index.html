@@ -184,19 +184,30 @@ updateCountdown();
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        const audio = document.getElementById("weddingMusic");
-        const musicButton = document.getElementById("musicButton");
-        let isPlaying = false;
+ const audio = document.getElementById("wedding-music.mp3");
+const musicButton = document.getElementById("musicButton");
+let isPlaying = false;
 
-        musicButton.addEventListener("click", () => {
-            if (isPlaying) {
-                audio.pause();
-                musicButton.style.backgroundImage = "url('music-off.png')";
-            } else {
-                audio.play();
-                musicButton.style.backgroundImage = "url('music-on.png')";
-            }
-            isPlaying = !isPlaying;
+// Функция включения/выключения музыки
+musicButton.addEventListener("click", () => {
+    if (isPlaying) {
+        audio.pause();
+        musicButton.style.backgroundImage = "url('music-off.png')";
+    } else {
+        audio.play();
+        musicButton.style.backgroundImage = "url('music-on.png')";
+    }
+    isPlaying = !isPlaying;
+});
+
+// Автоматически включаем музыку после взаимодействия пользователя
+document.body.addEventListener("click", () => {
+    if (!isPlaying) {
+        audio.play();
+        musicButton.style.backgroundImage = "url('music-on.png')";
+        isPlaying = true;
+    }
+}, { once: true }); // Один раз, чтобы избежать раздражающего автозапуска каждый раз
         });
     </script>
 </body>
