@@ -6,7 +6,7 @@
     <title>Приглашение</title>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
 
         * {
             margin: 0;
@@ -48,17 +48,69 @@
             background-repeat: no-repeat;
         }
 
-        .countdown {
+        .img1 { background-image: url('2desktop_1.jpg'); }
+        .img2 { background-image: url('desktop_2.png'); }
+        .img3 { background-image: url('desktop_3.png'); }
+        .img4 { background-image: url('vote-desktop.jpg'); }
+
+        @media screen and (max-width: 768px) {
+            .img1 { background-image: url('2mobile_1.png'); }
+            .img2 { background-image: url('2mobile_2.png'); }
+            .img3 { background-image: url('2mobile_3.png'); }
+            .img4 { background-image: url('2mobile_4.png'); }
+        }
+
+.countdown {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px 30px;
+    border-radius: 10px;
+    font-size: 28px;
+    font-family: 'Playfair Display', serif;
+    white-space: nowrap;
+}
+
+        .scroll-icon {
             position: absolute;
-            top: 50%;
+            bottom: 20px;
             left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px 30px;
-            border-radius: 15px;
-            font-size: 36px;
-            font-family: 'Playfair Display', serif;
-            white-space: nowrap;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: url('wedding-ring.png') no-repeat center center;
+            background-size: contain;
+            animation: bounce 1.5s infinite;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, 0); }
+            50% { transform: translate(-50%, -10px); }
+        }
+
+        /* Кнопка музыки */
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: url('music-on.png') no-repeat center center;
+            background-size: cover;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            opacity: 0.8;
+        }
+
+        .music-btn:hover {
+            opacity: 1;
         }
     </style>
 </head>
@@ -66,7 +118,70 @@
     <div class="container">
         <div class="section img1">
             <div class="countdown" id="countdown"></div>
+            <div class="scroll-icon" onclick="scrollToNext(1)"></div>
+        </div>
+        <div class="section img2">
+            <div class="scroll-icon" onclick="scrollToNext(2)"></div>
+        </div>
+        <div class="section img3">
+            <div class="scroll-icon" onclick="scrollToNext(3)"></div>
+        </div>
+        <div class="section img4">
+            <div class="vote-section">
+                <h2>Вы придёте?</h2>
+                <button id="yes-btn" onclick="vote('yes')">Да</button>
+                <button id="no-btn" onclick="vote('no')">Нет</button>
+                <p id="vote-result"></p>
+            </div>
         </div>
     </div>
+
+    <audio id="weddingMusic" loop>
+        <source src="wedding-music.mp3" type="audio/mpeg">
+    </audio>
+    <button id="musicButton" class="music-btn"></button>
+
+    <script>
+        function scrollToNext(index) {
+            let sections = document.querySelectorAll('.section');
+            if (sections[index]) {
+                sections[index].scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function updateCountdown() {
+            const weddingDate = new Date("2025-04-20T00:00:00");
+            const now = new Date();
+            const diff = weddingDate - now;
+
+            if (diff <= 0) {
+                document.getElementById("countdown").innerText = "Свадьба уже началась!";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerText = ${days} дней ${hours} часов ${seconds} секунд;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        const audio = document.getElementById("weddingMusic");
+        const musicButton = document.getElementById("musicButton");
+        let isPlaying = false;
+        musicButton.addEventListener("click", () => {
+            if (isPlaying) {
+                audio.pause();
+                musicButton.style.backgroundImage = "url('music-off.png')";
+            } else {
+                audio.play();
+                musicButton.style.backgroundImage = "url('music-on.png')";
+            }
+            isPlaying = !isPlaying;
+        });
+    </script>
 </body>
 </html>
