@@ -103,20 +103,38 @@
         .vote-section button:hover {
             background: #d4889c;
         }
+
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: url('music-on.png') no-repeat center center;
+            background-size: cover;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            opacity: 0.8;
+        }
+
+        .music-btn:hover {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
     <div class="countdown" id="countdown"></div>
+    <button id="musicButton" class="music-btn"></button>
+    <audio id="weddingMusic" loop>
+        <source src="wedding-music.mp3" type="audio/mpeg">
+    </audio>
+    
     <div class="container">
-        <div class="section img1">
-            <div class="scroll-icon" onclick="scrollToNext(1)"></div>
-        </div>
-        <div class="section img2">
-            <div class="scroll-icon" onclick="scrollToNext(2)"></div>
-        </div>
-        <div class="section img3">
-            <div class="scroll-icon" onclick="scrollToNext(3)"></div>
-        </div>
+        <div class="section img1"></div>
+        <div class="section img2"></div>
+        <div class="section img3"></div>
         <div class="section img4">
             <div class="vote-section">
                 <h2>Вы придёте?</h2>
@@ -142,48 +160,28 @@
 
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-       document.getElementById("countdown").innerText = `${days} дней ${hours} часов ${seconds} секунд`;
-
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            document.getElementById("countdown").innerText = `${days} дней ${hours} часов ${minutes} минут`;
+        }
 
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        function vote(option) {
-            if (localStorage.getItem("hasVoted")) {
-                document.getElementById("vote-result").innerText = "Вы уже голосовали!";
-                return;
+        const audio = document.getElementById("weddingMusic");
+        const musicButton = document.getElementById("musicButton");
+        let isPlaying = false;
+
+        musicButton.addEventListener("click", () => {
+            if (isPlaying) {
+                audio.pause();
+                musicButton.style.backgroundImage = "url('music-off.png')";
+            } else {
+                audio.play();
+                musicButton.style.backgroundImage = "url('music-on.png')";
             }
-
-            let votes = JSON.parse(localStorage.getItem("votes")) || {
-                yes: 0,
-                coming: 0,
-                couple: 0,
-                no: 0,
-                totalPeople: 0
-            };
-
-            votes[option]++;
-            if (option === "couple") votes.totalPeople += 2;
-            else if (option !== "no") votes.totalPeople++;
-
-            localStorage.setItem("votes", JSON.stringify(votes));
-            localStorage.setItem("hasVoted", "true");
-            displayVotes();
-        }
-
-        function displayVotes() {
-            let votes = JSON.parse(localStorage.getItem("votes")) || {};
-            document.getElementById("vote-result").innerHTML = `
-                Да: ${votes.yes || 0}<br>
-                Я приду: ${votes.coming || 0}<br>
-                Приду с парой: ${votes.couple || 0}<br>
-                К сожалению, не смогу: ${votes.no || 0}<br>
-                Всего гостей: ${votes.totalPeople || 0}`;
-        }
-
-        displayVotes();
+            isPlaying = !isPlaying;
+        });
     </script>
 </body>
 </html>
